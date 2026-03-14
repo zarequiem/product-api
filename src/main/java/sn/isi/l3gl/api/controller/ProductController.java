@@ -1,0 +1,39 @@
+package sn.isi.l3gl.api.controller;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import sn.isi.l3gl.core.entity.Product;
+import sn.isi.l3gl.core.service.ProductService;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/products")
+@RequiredArgsConstructor
+public class ProductController {
+
+    private final ProductService productService;
+
+    @PostMapping
+    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
+        return ResponseEntity.ok(productService.createProduct(product));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Product>> listProducts() {
+        return ResponseEntity.ok(productService.listProducts());
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Product> updateQuantity(
+            @PathVariable Long id,
+            @RequestParam Integer quantity) {
+        return ResponseEntity.ok(productService.updateQuantity(id, quantity));
+    }
+
+    @GetMapping("/low-stock/count")
+    public ResponseEntity<Long> countLowStockProducts() {
+        return ResponseEntity.ok(productService.countLowStockProducts());
+    }
+}
